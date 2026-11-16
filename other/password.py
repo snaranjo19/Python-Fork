@@ -29,6 +29,12 @@ def alternative_password_generator(chars_incl: str, i: int) -> str:
     # Password Generator = full boot with random_number, random_letters, and
     # random_character FUNCTIONS
     # Put your code here...
+    # A negative remainder below would make the floor division and modulo add
+    # unexpected characters, so reject lengths that cannot hold chars_incl.
+    if len(chars_incl) > i:
+        raise ValueError(
+            "Password length must be at least the number of required characters"
+        )
     i -= len(chars_incl)
     quotient = i // 3
     remainder = i % 3
