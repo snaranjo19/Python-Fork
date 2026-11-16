@@ -26,9 +26,48 @@ def password_generator(length: int = 8) -> str:
 # chars_incl= characters that must be in password
 # i= how many letters or characters the password length will be
 def alternative_password_generator(chars_incl: str, i: int) -> str:
+    """
+    Generate a shuffled password of length i that contains every character of
+    chars_incl, padded with random letters, digits and punctuation.
+
+    >>> password = alternative_password_generator("Hello", 12)
+    >>> len(password)
+    12
+    >>> all(char in password for char in "Hello")
+    True
+    >>> len(alternative_password_generator("", 8))
+    8
+    >>> alternative_password_generator("", 0)
+    ''
+
+    Duplicate required characters are preserved, and a password whose length equals
+    len(chars_incl) is just a shuffle of chars_incl:
+
+    >>> sorted(alternative_password_generator("aab", 3))
+    ['a', 'a', 'b']
+
+    >>> alternative_password_generator("abcde", 2)
+    Traceback (most recent call last):
+        ...
+    ValueError: Password length must be at least the number of required characters
+    >>> alternative_password_generator("abcde", 4)
+    Traceback (most recent call last):
+        ...
+    ValueError: Password length must be at least the number of required characters
+    >>> alternative_password_generator("", -1)
+    Traceback (most recent call last):
+        ...
+    ValueError: Password length must be at least the number of required characters
+    """
     # Password Generator = full boot with random_number, random_letters, and
     # random_character FUNCTIONS
     # Put your code here...
+    # A negative remainder below would make the floor division and modulo add
+    # unexpected characters, so reject lengths that cannot hold chars_incl.
+    if len(chars_incl) > i:
+        raise ValueError(
+            "Password length must be at least the number of required characters"
+        )
     i -= len(chars_incl)
     quotient = i // 3
     remainder = i % 3
